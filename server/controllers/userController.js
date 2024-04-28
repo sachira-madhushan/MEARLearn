@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import env from 'dotenv';
+import userModel from "../models/userModel.js";
 
 env.config();
 
@@ -19,11 +20,11 @@ export const registerUser=async(req,res)=>{
     const salt=await bcrypt.genSalt(10);
     const hashedPassword=await bcrypt.hash(password,salt);
     const newUser=await User.create({
-        name,
-        email,
+        name:name,
+        email:email,
         password:hashedPassword,
         
-    });
+    },{timestamps:true});
     res.json({name:newUser.name,email:newUser.email,token:generateToken(newUser.id)}).status(200);
 }
 
@@ -34,9 +35,9 @@ export const loginUser=async(req,res)=>{
     const {email,password}=req.body;
     const user=await User.findOne({email});
     if(user && await bcrypt.compare(password,user.password)){
-        res.json({name:user.name,email:user.email,token:generateToken(user.id)}).status(201);
+        res.json({name:user.name,email:user.email,token:generateToken(user.id)});
     }else{
-        res.send("Login Failed").status(400);
+        //res.send("Login Failed").status(400);
     }
     
 }
@@ -45,10 +46,9 @@ export const loginUser=async(req,res)=>{
 //@route GET /api/user/getUser
 //@access Private
 export const getUser=async(req,res)=>{
-    const response=req.body;
-    // const newUser=await User.create(response);
-
-    res.send("User");
+    const userId = req.user.id
+    const user =await User.findById(userId).select('-password');
+    res.status(200).json({data: user}) 
 }
 
 //generate JWT token

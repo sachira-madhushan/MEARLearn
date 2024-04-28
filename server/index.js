@@ -6,6 +6,7 @@ import connectDB from './config/database.js';
 const app=express();
 app.use(express.json());
 
+
 app.use("/api/post",postRoutes);
 app.use("/api/user",userRoutes);
 

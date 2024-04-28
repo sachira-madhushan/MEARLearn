@@ -1,7 +1,7 @@
 import Post from "../models/postModel.js";
 
 export const allPosts=async(req,res)=>{
-    const allPosts=await Post.find();
+    const allPosts=await Post.find({user:req.user.id});
     res.send(allPosts);
 }
 

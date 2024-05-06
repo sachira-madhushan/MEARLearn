@@ -11,8 +11,14 @@ export const singlePost=async(req,res)=>{
 }
 
 export const createPost=async (req,res)=>{
-    const response=req.body;
-    const newPost=await Post.create(response);
+    const userId = req.user.id;
+    const {description,title}=req.body;
+    const newPost=await Post.create({
+        user:userId,
+        title:title,
+        description:description
+    });
+
     res.send(newPost);
 }
 

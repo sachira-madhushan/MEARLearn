@@ -25,7 +25,10 @@ export const createPost=async (req,res)=>{
 export const updatePost=async (req,res)=>{
     const post=req.body;
     const id=req.params.id;
-
+    const user=req.user;
+    if(!user){
+        res.send("Unauthorized");
+    }
     const updatedPost=await Post.findByIdAndUpdate(id,post,{new:true});
     res.send(updatedPost);
 }

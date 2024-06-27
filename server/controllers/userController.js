@@ -41,7 +41,6 @@ export const loginUser=async(req,res)=>{
     }
     
 }
-
 //@des get a user
 //@route GET /api/user/getUser
 //@access Private

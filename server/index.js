@@ -5,13 +5,13 @@ import connectDB from './config/database.js';
 
 const app=express();
 app.use(express.json());
+connectDB();
 
-
+//POST API
 app.use("/api/post",postRoutes);
+//USER API
 app.use("/api/user",userRoutes);
 
-
-connectDB();
 
 app.listen(4000,()=>{
     console.log("Server is running on port 4000");
